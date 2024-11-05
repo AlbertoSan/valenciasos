@@ -78,21 +78,21 @@
 
         <!-- Latitude -->
         <div class="col-12">
-          <label for="latitutde" class="form-label">Latitud *</label>
+          <label for="latitude" class="form-label">Latitud *</label>
           <input
             type="text"
             class="form-control"
             id="address"
-            v-model="formData.latitutde"
+            v-model="formData.latitude"
             required
-            :class="{ 'is-invalid': validationErrors.latitutde }"
+            :class="{ 'is-invalid': validationErrors.latitude }"
           >
-          <div class="invalid-feedback">{{ validationErrors.latitutde }}</div>
+          <div class="invalid-feedback">{{ validationErrors.latitude }}</div>
         </div>
 
         <!-- Longitude -->
         <div class="col-12">
-          <label for="longitude" class="form-label">Longitud *</label>
+          <label for="longitude" class="form-label">Longitude *</label>
           <input
             type="text"
             class="form-control"
@@ -189,7 +189,7 @@ export default {
       type: '',
       capacity: '',
       address: '',
-      latitutde: '',
+      latitude: '',
       longitude: '',
       phone: '',
       email: '',
@@ -214,6 +214,14 @@ export default {
       
       if (!formData.address.trim()) {
         errors.address = 'La dirección es obligatoria'
+      }
+
+      if (!formData.longitude.trim()) {
+        errors.address = 'La Longitud es obligatoria'
+      }
+
+      if (!formData.latitude.trim()) {
+        errors.address = 'La Latitud es obligatoria'
       }
       
       if (!formData.phone.trim()) {
@@ -249,14 +257,28 @@ export default {
           name: formData.name,
           type: formData.type === 'shelter' ? 'aid_point' : 'association',
           address: formData.address,
-          lat: formData.latitutde || 39.5074,
-          lng: formData.longitude || 0.1278,
+          lat: formData.latitude,
+          lng: formData.longitude,
           description: `Capacidad: ${formData.capacity} animales\nContacto: ${formData.phone}, ${formData.email}\nNecesidades: ${formData.needs || 'Ninguna especificada'}`,
           contact: `${formData.phone} | ${formData.email}`,
           services: formData.services
         }
 
-        await locationStore.addLocation(locationData)
+        // Realizar la solicitud al servidor
+        const response = await fetch('http://localhost:3001/api/locations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(locationData)
+        });
+
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+          const errorData = await response.json(); // Obtener detalles del error del cuerpo de la respuesta
+          throw new Error(errorData.message || 'Error en la solicitud');
+        }
+
         showSuccess.value = true
         
         Object.keys(formData).forEach(key => formData[key] = '')

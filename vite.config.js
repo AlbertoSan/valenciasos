@@ -12,10 +12,13 @@ export default defineConfig({
   server: {
     port: 5001,
     host: '0.0.0.0',
-    hmr: {
-      host: '0.0.0.0',
-      port: 5001,
-      protocol: 'ws'
+    proxy: {
+      '/api': {
+        target: 'http://0.0.0.0:3001',
+        changeOrigin: true,
+        secure: false,
+        ws: true
+      }
     }
   }
 })

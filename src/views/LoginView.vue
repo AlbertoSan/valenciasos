@@ -6,8 +6,9 @@
           <div class="card-body">
             <h2 class="text-center mb-4">Iniciar Sesión</h2>
             
-            <div v-if="authStore.error" class="alert alert-danger">
+            <div v-if="authStore.error" class="alert alert-danger alert-dismissible fade show" role="alert">
               {{ authStore.error }}
+              <button type="button" class="btn-close" @click="authStore.clearError"></button>
             </div>
 
             <form @submit.prevent="handleSubmit">
@@ -20,6 +21,7 @@
                   v-model="username"
                   required
                   :disabled="authStore.isLoading"
+                  autocomplete="username"
                 >
               </div>
 
@@ -32,6 +34,7 @@
                   v-model="password"
                   required
                   :disabled="authStore.isLoading"
+                  autocomplete="current-password"
                 >
               </div>
 
@@ -54,13 +57,14 @@
 <script>
 import { ref } from 'vue'
 import { useAuthStore } from '../stores/auth'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 export default {
   name: 'LoginView',
   setup() {
     const authStore = useAuthStore()
     const router = useRouter()
+    const route = useRoute()
     const username = ref('')
     const password = ref('')
 
@@ -71,7 +75,8 @@ export default {
       })
 
       if (success) {
-        router.push('/admin')
+        const redirectPath = route.query.redirect || '/admin'
+        router.push(redirectPath)
       }
     }
 

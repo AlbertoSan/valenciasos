@@ -34,22 +34,21 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   
-  try {
-    // Initialize auth state from localStorage if not already done
-    if (!authStore.user) {
-      await authStore.initializeAuth()
-    }
+  // Initialize auth state if needed
+  if (!authStore.isAuthenticated) {
+    await authStore.initializeAuth()
+  }
 
-    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-      next('/login')
-    } else if (to.path === '/login' && authStore.isAuthenticated) {
-      next('/admin')
-    } else {
-      next()
-    }
-  } catch (error) {
-    console.error('Navigation error:', error)
-    next('/login')
+  // Handle authentication requirements
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next({ 
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } else if (to.path === '/login' && authStore.isAuthenticated) {
+    next(to.query.redirect || '/admin')
+  } else {
+    next()
   }
 })
 

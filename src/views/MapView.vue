@@ -1,12 +1,6 @@
 <template>
   <div class="map-container">
-    <div class="search-panel">
-      <input
-        type="text"
-        class="form-control mb-3"
-        placeholder="Buscar ubicaciones..."
-        v-model="searchQuery"
-      >
+    <div class="search-panel">      
       <div class="form-check mb-2">
         <input
           class="form-check-input"
@@ -28,10 +22,7 @@
         <label class="form-check-label" for="show-aid-points">
           Mostrar Puntos de Ayuda
         </label>
-      </div>
-      <button class="btn btn-secondary" @click="locateUser">
-        <i class="fas fa-location-dot"></i> Encontrar Mi Ubicación
-      </button>
+      </div>      
     </div>
     <div id="map"></div>
 
@@ -192,10 +183,14 @@ export default {
   width: 100%;
 }
 
+  .search-panel {
+    margin-left: 30px
+  }
+
 .search-panel {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 30px;
   z-index: 1000;
   background: var(--bs-dark);
   padding: 15px;

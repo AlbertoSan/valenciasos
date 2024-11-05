@@ -1,0 +1,33 @@
+Objective: Create a Vue CLI application featuring an interactive map to display associations and community aid points, with search and filter functionalities.
+
+Requirements:
+
+    Project Setup:
+        Use Vue CLI as the primary framework.
+        Configure the project with Vue Router for managing navigation routes.
+        Utilize Pinia for global state management.
+        Include Leaflet (or a similar library) for displaying an interactive map.
+
+    Core Functionalities:
+        Display Points of Interest: Show an interactive map with markers representing associations and community aid points.
+        Detailed Information: When a marker is clicked, display a dialog box or popup with detailed information, such as name, address, hours of operation, services offered, and contact details.
+        Search and Filter: Add a search bar to locate specific points by name or address, and include filters to display only certain types of points (e.g., associations only or aid points only).
+        User Geolocation: Allow the user to view their location on the map and find nearby points of interest.
+        Optional: Include functionality to calculate the route from the user’s current location to a selected point of interest.
+
+    Suggested Vue Components:
+        MapMain.vue: The main component that holds the map and manages loading and displaying points of interest.
+        SearchFilter.vue: A component for searching and filtering, allowing users to select which types of points to view.
+        PointDetails.vue: A dialog box or popup that shows detailed information when selecting a marker on the map.
+
+    Data Source and Backend:
+        Set up a RESTful API or a JSON file containing information about associations and aid points, including coordinates, type (association or aid), and additional details.
+        Consider implementing a simple backend with Node.js and Express if real-time database needs arise, or use Firebase for data storage and management.
+
+    Styling and User Experience:
+        Basic and responsive styling using CSS or Vuetify for a user-friendly and accessible app.
+        Ensure the app is mobile-friendly, adapting the map design and information windows accordingly.
+
+    Extras (Optional):
+        Add notifications for events or new points of interest in the user's vicinity.
+        Include basic authentication, allowing only registered users to add or edit points of interest (if required).
